@@ -1,0 +1,29 @@
+{
+  "name": "panchkarma-patient-management",
+  "version": "1.0.0",
+  "description": "Full-stack Panchkarma Patient Management & Therapy Scheduler",
+  "main": "server/index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd server && npm run dev",
+    "client": "cd client && npm start",
+    "install-all": "npm install && cd server && npm install && cd ../client && npm install",
+    "build": "cd client && npm run build",
+    "start": "cd server && npm start"
+  },
+  "keywords": [
+    "panchkarma",
+    "healthcare",
+    "patient-management",
+    "therapy-scheduler"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "mongoose": "^8.18.1"
+  }
+}
