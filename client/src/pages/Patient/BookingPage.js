@@ -42,17 +42,34 @@ const BookingPage = () => {
     }
   }, [location.state]);
 
+  // const fetchCenters = async () => {
+  //   try {
+  //     const response = await api.get('/centers');
+  //     setCenters(response.data.centers);
+  //   } catch (error) {
+  //     console.error('Error fetching centers:', error);
+  //     toast.error('Failed to fetch centers');
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const fetchCenters = async () => {
-    try {
-      const response = await api.get('/centers');
-      setCenters(response.data.centers);
-    } catch (error) {
-      console.error('Error fetching centers:', error);
-      toast.error('Failed to fetch centers');
-    } finally {
-      setLoading(false);
-    }
-  };
+  try {
+    const response = await api.get('/centers');
+    console.log("Centers API response:", response.data); // 👀 Debug
+
+    // Adjust this line depending on API shape
+    const centersData = response.data.centers || response.data || [];
+    setCenters(centersData);
+  } catch (error) {
+    console.error('Error fetching centers:', error);
+    toast.error('Failed to fetch centers');
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const fetchAvailableSlots = async (centerId, date) => {
     try {
