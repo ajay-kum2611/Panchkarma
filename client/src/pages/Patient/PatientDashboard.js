@@ -16,7 +16,8 @@ import {
   Plus,
   BarChart3,
   Target,
-  Award
+  Award,
+  Star 
 } from 'lucide-react';
 import Button from '../../components/UI/Button';
 import Card from '../../components/UI/Card';
