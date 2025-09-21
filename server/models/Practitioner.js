@@ -1,12 +1,9 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
-
 const practitionerSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, 'Name is required'],
-    trim: true,
-    maxlength: [50, 'Name cannot exceed 50 characters']
+    required: [true, 'Practitioner name is required'],
+    trim: true
   },
   email: {
     type: String,
@@ -15,65 +12,124 @@ const practitionerSchema = new mongoose.Schema({
     lowercase: true,
     match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please enter a valid email']
   },
+  password: {
+    type: String,
+    required: [true, 'Password is required'],
+    minlength: [6, 'Password must be at least 6 characters long']
+  },
   phone: {
     type: String,
     required: [true, 'Phone number is required'],
     match: [/^\+?[\d\s-()]+$/, 'Please enter a valid phone number']
   },
-  password: {
-    type: String,
-    required: [true, 'Password is required'],
-    minlength: [6, 'Password must be at least 6 characters']
-  },
   specialization: {
     type: String,
-    required: [true, 'Specialization is required'],
     trim: true
+  },
+  experience: {
+    type: Number,
+    default: 0
   },
   centerId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Center',
-    required: [true, 'Center assignment is required']
+    ref: 'Center',   // ✅ Links practitioner to a Center
+    required: [true, 'Center reference is required']
   },
   isActive: {
     type: Boolean,
     default: true
-  },
-  lastLogin: {
-    type: Date
-  },
-  role: {
-    type: String,
-    enum: ['practitioner', 'admin'],
-    default: 'practitioner'
   }
 }, {
   timestamps: true
 });
 
-// Hash password before saving
-practitionerSchema.pre('save', async function(next) {
-  if (!this.isModified('password')) return next();
-  
-  try {
-    const salt = await bcrypt.genSalt(12);
-    this.password = await bcrypt.hash(this.password, salt);
-    next();
-  } catch (error) {
-    next(error);
-  }
-});
-
-// Compare password method
-practitionerSchema.methods.comparePassword = async function(candidatePassword) {
-  return await bcrypt.compare(candidatePassword, this.password);
-};
-
-// Remove password from JSON output
-practitionerSchema.methods.toJSON = function() {
-  const practitioner = this.toObject();
-  delete practitioner.password;
-  return practitioner;
-};
-
 module.exports = mongoose.model('Practitioner', practitionerSchema);
+
+
+
+
+
+
+
+
+
+
+// const mongoose = require('mongoose');
+// const bcrypt = require('bcryptjs');
+
+// const practitionerSchema = new mongoose.Schema({
+//   name: {
+//     type: String,
+//     required: [true, 'Name is required'],
+//     trim: true,
+//     maxlength: [50, 'Name cannot exceed 50 characters']
+//   },
+//   email: {
+//     type: String,
+//     required: [true, 'Email is required'],
+//     unique: true,
+//     lowercase: true,
+//     match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please enter a valid email']
+//   },
+//   phone: {
+//     type: String,
+//     required: [true, 'Phone number is required'],
+//     match: [/^\+?[\d\s-()]+$/, 'Please enter a valid phone number']
+//   },
+//   password: {
+//     type: String,
+//     required: [true, 'Password is required'],
+//     minlength: [6, 'Password must be at least 6 characters']
+//   },
+//   specialization: {
+//     type: String,
+//     required: [true, 'Specialization is required'],
+//     trim: true
+//   },
+//   centerId: {
+//     type: mongoose.Schema.Types.ObjectId,
+//     ref: 'Center',
+//     required: [true, 'Center assignment is required']
+//   },
+//   isActive: {
+//     type: Boolean,
+//     default: true
+//   },
+//   lastLogin: {
+//     type: Date
+//   },
+//   role: {
+//     type: String,
+//     enum: ['practitioner', 'admin'],
+//     default: 'practitioner'
+//   }
+// }, {
+//   timestamps: true
+// });
+
+// // Hash password before saving
+// practitionerSchema.pre('save', async function(next) {
+//   if (!this.isModified('password')) return next();
+  
+//   try {
+//     const salt = await bcrypt.genSalt(12);
+//     this.password = await bcrypt.hash(this.password, salt);
+//     next();
+//   } catch (error) {
+//     next(error);
+//   }
+// });
+
+// // Compare password method
+// practitionerSchema.methods.comparePassword = async function(candidatePassword) {
+//   return await bcrypt.compare(candidatePassword, this.password);
+// };
+
+// // Remove password from JSON output
+// practitionerSchema.methods.toJSON = function() {
+//   const practitioner = this.toObject();
+//   delete practitioner.password;
+//   return practitioner;
+// };
+
+// module.exports = mongoose.model('Practitioner', practitionerSchema);
