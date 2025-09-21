@@ -19,6 +19,7 @@ import {
   Award,
   Star 
 } from 'lucide-react';
+import {FaStar} from 'react-icons/fa';
 import Button from '../../components/UI/Button';
 import Card from '../../components/UI/Card';
 import LoadingSpinner from '../../components/UI/LoadingSpinner';
@@ -310,7 +311,7 @@ const PatientDashboard = () => {
                         <h4 className="font-medium text-gray-900">Session {feedback.sessionNumber}</h4>
                         <div className="flex items-center">
                           {[...Array(5)].map((_, i) => (
-                            <Star
+                            < FaStar
                               key={i}
                               className={`w-4 h-4 ${
                                 i < feedback.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'
